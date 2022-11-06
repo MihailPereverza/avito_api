@@ -4,8 +4,14 @@ import (
 	"avito_api/internal/app"
 	"avito_api/internal/config"
 	"avito_api/internal/db"
+	"avito_api/internal/db/account"
+	user2 "avito_api/internal/db/user"
+	account2 "avito_api/internal/handler/account"
+	"avito_api/internal/handler/user"
 	"avito_api/internal/router"
+	"avito_api/internal/service"
 	"context"
+	"database/sql"
 	"log"
 	"os"
 	"os/signal"
@@ -17,7 +23,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	globalRouter := new(router.Router)
+	globalRouter := createRouter(pg)
 	srv := app.NewApp(config.GetAppConfig(), globalRouter.InitRoutes())
 
 	quit := make(chan os.Signal, 1)
@@ -42,4 +48,19 @@ func main() {
 		log.Printf("error occured on pg connection close: %s", err.Error())
 	}
 	log.Println("server was shut down")
+}
+
+func createRouter(db *sql.DB) *router.Router {
+	userDB := user2.NewDBUser(db)
+	userService := service.NewUserService(userDB)
+	userHandler := user.NewUserHandler(userService)
+
+	accountDB := account.NewDBAccount(db)
+	accountService := service.NewAccountService(accountDB)
+	accountHandler := account2.NewAccountHandler(accountService)
+
+	//currencyDB := currency.NewDBCurrency(db)
+	//fmt.Println(currencyDB.GetAllCurrency())
+
+	return router.NewRouter(userHandler, accountHandler)
 }

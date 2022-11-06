@@ -40,7 +40,11 @@ func createUserTable(db *sql.DB) error {
 	users, err := db.Prepare(`CREATE TABLE  IF NOT EXISTS users(
 		user_id INTEGER PRIMARY KEY DEFAULT nextval('user_id_seq'),
 		name VARCHAR(64) NOT NULL,
-		email VARCHAR(64) NOT NULL);`)
+		email VARCHAR(64) NOT NULL,
+    	UNIQUE(name),
+		UNIQUE(email)
+    );`)
+
 	if err != nil {
 		return err
 	}
@@ -125,7 +129,8 @@ func createAccountOperationTable(db *sql.DB) error {
     	user_id INTEGER REFERENCES users(user_id) NOT NULL,
     	service_id INTEGER REFERENCES service(service_id) NOT NULL,
     	count INTEGER NOT NULL DEFAULT 1,
-    	total_cost Decimal(13,4) NOT NULL
+    	total_cost Decimal(13,4) NOT NULL,
+    	create_time TIMESTAMP DEFAULT now()::timestamp
 	)`)
 	if err != nil {
 		return err

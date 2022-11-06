@@ -1,22 +1,40 @@
 package router
 
 import (
-	"avito_api/internal/handler"
+	"avito_api/internal/handler/interface"
+	account2 "avito_api/internal/router/account"
+	user2 "avito_api/internal/router/user"
 	"github.com/gorilla/mux"
 )
 
 type Router struct {
+	UserHandler    handler_interface.UserHandlerInterface
+	AccountHandler handler_interface.AccountHandlerInterface
+	GlobalRouter   *mux.Router
 }
 
-func (h *Router) InitRoutes() *mux.Router {
-	router := mux.NewRouter()
+func NewRouter(
+	userHandler handler_interface.UserHandlerInterface,
+	accountHandler handler_interface.AccountHandlerInterface,
+) *Router {
+	return &Router{
+		UserHandler:    userHandler,
+		AccountHandler: accountHandler,
+		GlobalRouter:   mux.NewRouter(),
+	}
+}
 
-	api := router.PathPrefix("/api").Subrouter()
+func (r *Router) InitRoutes() *mux.Router {
+	api := r.GlobalRouter.PathPrefix("/api").Subrouter()
 	{
 		user := api.PathPrefix("/user").Subrouter()
 		{
-			user.HandleFunc("/{id}", handler.Handler).Methods("GET")
+			user2.SetUserRouter(r.UserHandler, user)
+		}
+		account := api.PathPrefix("/account").Subrouter()
+		{
+			account2.SetAccountRouter(r.AccountHandler, account)
 		}
 	}
-	return router
+	return r.GlobalRouter
 }
