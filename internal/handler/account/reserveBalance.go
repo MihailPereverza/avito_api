@@ -71,13 +71,13 @@ func operateReserveBalanceError(account *model.Account, err error) string {
 	if err == nil {
 
 	} else if err.Error() == notFoundAccountToUpdate {
-		errMessage = fmt.Sprintf(`not found account_id %d`, account.ID)
+		errMessage = fmt.Sprintf(`not found account_id`)
 	} else if err.Error() == insufficientFunds {
 		errMessage = fmt.Sprintf(`insufficient funds`)
-	} else if err.Error() == notFoundOperation {
+	} else if err.Error() == notFoundOperationReserveBalance {
 		errMessage = fmt.Sprintf(`not found service`)
 	} else if err.Error() == operationAlreadyExists {
-		errMessage = fmt.Sprintf(`order_id=%d already exists`, account.ID)
+		errMessage = fmt.Sprintf(`order_id already exists`)
 	} else if err != nil {
 		log.Printf("handle error: %s| on AccountHandler reserveAccount on call accountService", err)
 		errMessage = `something error in request data`
