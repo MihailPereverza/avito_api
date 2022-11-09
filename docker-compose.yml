@@ -13,11 +13,13 @@ services:
 
   postgres:
     image: postgres:14.3-alpine
+    env_file:
+      - .env
     environment:
       log_statement: "all"
-      POSTGRES_DB: "test_db"
-      POSTGRES_USER: "test_db"
-      POSTGRES_PASSWORD: "test_db"
+      POSTGRES_DB: "${DB_NAME}"
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PASS}"
 #    volumes:
 #      - ./db-data/:/var/lib/postgresql/data/
     ports:
