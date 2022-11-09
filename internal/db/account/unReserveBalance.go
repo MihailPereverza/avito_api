@@ -57,7 +57,7 @@ func cancelOperation(tx *sql.Tx, operationInfo *model.OperationInfo) error {
 		account_id = $1 AND status_id = 0 AND service_id = $2 
 		AND operation_id = $3 AND total_cost = $4`
 	res, err := tx.Exec(queryOperation,
-		operationInfo.ID, operationInfo.ServiceID, operationInfo.ID, operationInfo.TotalCost,
+		operationInfo.AccountID, operationInfo.ServiceID, operationInfo.ID, operationInfo.TotalCost,
 	)
 	if err != nil {
 		return fmt.Errorf("UnReserveBalance.cancelOperation %w", err)

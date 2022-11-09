@@ -16,9 +16,9 @@ var enoughMoney = `ERROR: new row for relation "account" violates check constrai
 var insufficientFunds = `ReserveBalance.updateAccountBalance ERROR: new row for relation "account" violates check constraint "account_balance_check" (SQLSTATE 23514)`
 var notAffectedRows = `DB.ApproveDebiting operation not found`
 
+var notFoundOperationReserveBalance = `ReserveBalance.insertOperation ERROR: insert or update on table "account_operation" violates foreign key constraint "account_operation_status_id_fkey" (SQLSTATE 23503)`
 var notFoundAccountToSet = `sql: no rows in result set`
 var notFoundAccountToUpdate = `ReserveBalance.updateAccountBalance sql: no rows in result set`
-var notFoundOperation = `ReserveBalance.insertOperation ERROR: insert or update on table "account_operation" violates foreign key constraint "account_operation_service_id_fkey" (SQLSTATE 23503)`
 var notFoundAccountOperation = `account has not operations`
 
 var operationAlreadyExists = `ReserveBalance.insertOperation ERROR: duplicate key value violates unique constraint "account_operation_pkey" (SQLSTATE 23505)`

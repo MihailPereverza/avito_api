@@ -20,12 +20,12 @@ type DBBaseOperationInfo struct {
 }
 
 type OperationInfo struct {
-	ID         int `json:"operation_id"`
-	AccountID  int `json:"account_id"`
-	ServiceID  int `json:"service_id"`
-	StatusID   int `json:"status_id"`
-	TotalCost  int `json:"total_cost"`
-	CreateTime int `json:"create_time"`
+	ID         int       `json:"operation_id"`
+	AccountID  int       `json:"account_id"`
+	ServiceID  int       `json:"service_id"`
+	StatusID   int       `json:"status_id"`
+	TotalCost  float32   `json:"total_cost"`
+	CreateTime time.Time `json:"create_time"`
 }
 
 type OperationReport struct {
