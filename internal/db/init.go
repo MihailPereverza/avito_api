@@ -2,7 +2,6 @@ package db
 
 import (
 	"database/sql"
-	"fmt"
 )
 
 func Init(db *sql.DB) error {
@@ -37,7 +36,7 @@ func createAccountTable(db *sql.DB) error {
 	// если есть ошибка -> "аккаунт компании" уже создан
 	_, err = db.Exec(`INSERT INTO account(account_id) VALUES (0);`)
 	if err != nil {
-		fmt.Printf("try add company in table error: %s", err)
+		//fmt.Printf("try add company in table error: %s", err)
 	}
 	return nil
 }
@@ -56,6 +55,15 @@ func createServiceTable(db *sql.DB) error {
 	if _, err = service.Exec(); err != nil {
 		return err
 	}
+
+	_, err = db.Exec(`INSERT INTO service(service_id, title, price, description) VALUES (0, 'Продвижение X5', 99.9, 'В пять раз больше показов на главной');`)
+	if err != nil {
+		//fmt.Printf("try add service in service_table error: %s", err)
+	}
+	_, err = db.Exec(`INSERT INTO service(service_id, title, price, description) VALUES (1, 'Категория кошечки', 100500, 'Выложить объявление с кошечкой');`)
+	if err != nil {
+		//fmt.Printf("try add service in service_table error: %s", err)
+	}
 	return nil
 }
 
@@ -69,6 +77,19 @@ func createOperationStatusTable(db *sql.DB) error {
 	}
 	if _, err = statuses.Exec(); err != nil {
 		return err
+	}
+
+	_, err = db.Exec(`INSERT INTO operation_status(status_id, title) VALUES (0, 'Зарезервирована');`)
+	if err != nil {
+		//fmt.Printf("try add service in service_table error: %s", err)
+	}
+	_, err = db.Exec(`INSERT INTO operation_status(status_id, title) VALUES (1, 'Подтверждена');`)
+	if err != nil {
+		//fmt.Printf("try add service in service_table error: %s", err)
+	}
+	_, err = db.Exec(`INSERT INTO operation_status(status_id, title) VALUES (2, 'Отмененна');`)
+	if err != nil {
+		//fmt.Printf("try add service in service_table error: %s", err)
 	}
 	return nil
 }
