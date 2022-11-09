@@ -18,7 +18,7 @@ func NewApp(cfg *config.AppConfig, router http.Handler) *App {
 		cfg:    cfg,
 		router: router,
 		httpsServer: &http.Server{
-			Addr:           cfg.Port,
+			Addr:           ":" + cfg.Port,
 			Handler:        router,
 			MaxHeaderBytes: 1 << 20, // 1MB
 			ReadTimeout:    10 * time.Second,

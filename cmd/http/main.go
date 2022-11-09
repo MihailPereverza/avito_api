@@ -5,9 +5,9 @@ import (
 	"avito_api/internal/config"
 	"avito_api/internal/db"
 	"avito_api/internal/db/account"
-	user2 "avito_api/internal/db/user"
+	"avito_api/internal/db/operation"
 	account2 "avito_api/internal/handler/account"
-	"avito_api/internal/handler/user"
+	hanlderReport "avito_api/internal/handler/report"
 	"avito_api/internal/router"
 	"avito_api/internal/service"
 	"context"
@@ -18,11 +18,19 @@ import (
 	"syscall"
 )
 
+// @title AvitBalanceService
+// @version 1.0
+// @description тестовое задание для авито
+
+// @host localhost:8080
+// @BasePath /
+
 func main() {
 	pg, err := db.NewPostgres(config.GetDBConfig())
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	globalRouter := createRouter(pg)
 	srv := app.NewApp(config.GetAppConfig(), globalRouter.InitRoutes())
 
@@ -51,16 +59,14 @@ func main() {
 }
 
 func createRouter(db *sql.DB) *router.Router {
-	userDB := user2.NewDBUser(db)
-	userService := service.NewUserService(userDB)
-	userHandler := user.NewUserHandler(userService)
-
 	accountDB := account.NewDBAccount(db)
-	accountService := service.NewAccountService(accountDB)
+	operationDB := operation.NewDBOperation(db)
+
+	accountService := service.NewAccountService(accountDB, operationDB)
+	reportService := service.NewReportService(accountDB, operationDB)
+
 	accountHandler := account2.NewAccountHandler(accountService)
+	reportHandler := hanlderReport.NewReportHandler(reportService)
 
-	//currencyDB := currency.NewDBCurrency(db)
-	//fmt.Println(currencyDB.GetAllCurrency())
-
-	return router.NewRouter(userHandler, accountHandler)
+	return router.NewRouter(accountHandler, reportHandler)
 }
