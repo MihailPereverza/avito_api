@@ -7,7 +7,6 @@ import (
 )
 
 type AppConfig struct {
-	Mode      string
 	Port      string
 	DBConfig  *DBConfig
 	ReportURI string
@@ -44,7 +43,6 @@ func getEnv(key string, defaultVal string) string {
 
 func initAppConfig(db *DBConfig) *AppConfig {
 	return &AppConfig{
-		Mode:      getEnv("APP_MODE", "debug"),
 		Port:      getEnv("APP_PORT", "8080"),
 		DBConfig:  db,
 		ReportURI: "/reports",
