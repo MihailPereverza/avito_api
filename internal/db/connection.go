@@ -10,14 +10,13 @@ import (
 )
 
 func NewPostgres(cfg *config.DBConfig) (*sql.DB, error) {
-	dbURI := fmt.Sprintf("port=%s host=%s user=%s password=%s dbname=%s sslmode=disable",
-		cfg.Port,
-		cfg.Host,
+	dbURI := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable",
 		cfg.User,
 		cfg.Password,
-		cfg.DBName,
-	)
-
+		cfg.Host,
+		cfg.Port,
+		cfg.DBName)
+	fmt.Println(dbURI)
 	db, err := sql.Open(cfg.Driver, dbURI)
 	if err != nil {
 		return nil, err
