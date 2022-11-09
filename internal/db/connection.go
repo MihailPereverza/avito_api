@@ -16,7 +16,6 @@ func NewPostgres(cfg *config.DBConfig) (*sql.DB, error) {
 		cfg.Host,
 		cfg.Port,
 		cfg.DBName)
-	fmt.Println(dbURI)
 	db, err := sql.Open(cfg.Driver, dbURI)
 	if err != nil {
 		return nil, err

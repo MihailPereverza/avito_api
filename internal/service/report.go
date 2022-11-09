@@ -35,7 +35,7 @@ func (r ReportService) GetReport() (string, error) {
 		t.Year(), t.Month(), t.Day(),
 		t.Hour(), t.Minute(), t.Second(),
 	)
-	file, err := os.Create(fmt.Sprintf("./internal/static/reports/%s", fileName))
+	file, err := os.Create(fmt.Sprintf("./reports/%s", fileName))
 	if err != nil {
 		fmt.Println(err)
 		return "", fmt.Errorf("cant open general csv")

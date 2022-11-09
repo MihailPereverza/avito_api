@@ -1,0 +1,29 @@
+version: "3.7"
+services:
+  avito_api:
+    image: service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    restart: on-failure
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:14.3-alpine
+    environment:
+      log_statement: "all"
+      POSTGRES_DB: "test_db"
+      POSTGRES_USER: "test_db"
+      POSTGRES_PASSWORD: "test_db"
+#    volumes:
+#      - ./db-data/:/var/lib/postgresql/data/
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    command: ["postgres", "-c", "log_statement=all"]
+
+networks:
+  nt_postgres:
+    driver: bridge

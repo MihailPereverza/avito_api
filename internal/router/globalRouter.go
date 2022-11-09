@@ -51,7 +51,7 @@ func (r *Router) InitRoutes() *mux.Router {
 	r.GlobalRouter.PathPrefix("/reports/").Handler(
 		http.StripPrefix(
 			"/reports/",
-			http.FileServer(http.Dir("./internal/static/reports/")),
+			http.FileServer(http.Dir("./reports/")),
 		),
 	).Methods("GET")
 	return r.GlobalRouter
