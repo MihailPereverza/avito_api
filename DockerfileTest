@@ -1,0 +1,11 @@
+FROM golang:alpine
+RUN apk add build-base
+
+WORKDIR /build
+
+ADD go.mod .
+ADD go.sum .
+ADD .env .
+COPY cmd cmd
+COPY internal internal
+COPY docs docs

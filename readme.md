@@ -21,6 +21,20 @@
 3. Выполнить `swag init -g ./cmd/http/main.go`
 4. Выполнить команду `go run cmd/http/main.go`, после чего сервис поднимется на localhost:${APP_PORT}
 
+Запуск тестов в докере:
+1. Настроить .env файл: DP_HOST установить postgres
+2. Установить swaggo `go get github.com/swaggo/swag/cmd/swag`
+3. Выполнить `swag init -g ./cmd/http/main.go`
+4. Выполнить команду `docker-compose -f docker-compose-test.yml  up -d --build`, после чего будут прогнаны тесты в
+   контейнере. Результат можно будет увидеть в логах контейнера
+
+Запуск тестов вне докера:
+1. Настроить .env файл: DP_HOST установить на хост базы (локально - localhost)
+2. Установить swaggo `go get github.com/swaggo/swag/cmd/swag`
+3. Выполнить `swag init -g ./cmd/http/main.go`
+4. Выполнить команду `go test ./internal/db/account`, после чего будут прогнаны тесты.
+
+
 ____
 ## Методы
 ____
