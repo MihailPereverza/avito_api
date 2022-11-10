@@ -59,10 +59,13 @@ func cancelOperation(tx *sql.Tx, operationInfo *model.OperationInfo) error {
 	res, err := tx.Exec(queryOperation,
 		operationInfo.AccountID, operationInfo.ServiceID, operationInfo.ID, operationInfo.TotalCost,
 	)
+	fmt.Println(operationInfo)
 	if err != nil {
 		return fmt.Errorf("UnReserveBalance.cancelOperation %w", err)
 	}
 	if affected, _ := res.RowsAffected(); affected == 0 {
+		fmt.Println(affected)
+		fmt.Println(res)
 		return fmt.Errorf("UnReserveBalance.cancelOperation not affected")
 	}
 	return nil
