@@ -1,6 +1,7 @@
 package account
 
 import (
+	"avito_api/internal/config"
 	"avito_api/internal/db/model"
 	"database/sql"
 	"fmt"
@@ -14,7 +15,6 @@ func (D *DBAccount) GetStatistic(stat *model.DBGetStatistic) ([]model.DBGetStati
 	}
 
 	var sqlOrderDirection string
-
 	sqlOrderDirection, stat.Direction, err = prepareSQLOrderDirection(stat.OrderDirection, stat.Direction)
 	if err != nil {
 		return nil, err
@@ -24,7 +24,6 @@ func (D *DBAccount) GetStatistic(stat *model.DBGetStatistic) ([]model.DBGetStati
 		return nil, err
 	}
 	compSymbol := prepareCompSymbol(stat)
-
 	rows, err := D.getOperationRows(stat, compSymbol, sqlOrderDirection)
 	if err != nil {
 		log.Printf("DBAccount.GetStatistic.db.Query handle err: %s", err)
@@ -98,8 +97,8 @@ func (D *DBAccount) getOperationRows(stat *model.DBGetStatistic, compSymbol stri
 	    account_id = $1 
 	    %s
 	ORDER BY %s %s, operation_id %s
-	LIMIT $2;`, paginationSQL, stat.OrderBy, sqlOrderDirection, sqlOrderDirection)
-	rows, err := D.db.Query(query, stat.AccountID, stat.Count)
+	LIMIT $2 OFFSET $3;`, paginationSQL, stat.OrderBy, sqlOrderDirection, sqlOrderDirection)
+	rows, err := D.db.Query(query, stat.AccountID, stat.Count, stat.Count-config.GetAppConfig().AccountStatisticPageSize)
 	return rows, err
 }
 

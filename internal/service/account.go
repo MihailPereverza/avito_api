@@ -1,6 +1,7 @@
 package service
 
 import (
+	"avito_api/internal/config"
 	"avito_api/internal/db/interface"
 	"avito_api/internal/db/model"
 	account2 "avito_api/internal/handler/inputModel/account"
@@ -75,7 +76,7 @@ func (us *AccountService) GetBalance(accountID int) (*model.Account, error) {
 
 func (us *AccountService) GetStatistic(input *account2.GetStatisticInput) ([]account.GetStatisticOutput, error) {
 	direction := 0
-	count := 1
+	count := config.GetAppConfig().AccountStatisticPageSize
 	if input.NewPage > input.LastPage {
 		direction = 1
 		count *= input.NewPage - input.LastPage

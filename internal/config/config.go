@@ -7,9 +7,10 @@ import (
 )
 
 type AppConfig struct {
-	Port      string
-	DBConfig  *DBConfig
-	ReportURI string
+	AccountStatisticPageSize int
+	Port                     string
+	DBConfig                 *DBConfig
+	ReportURI                string
 }
 
 type DBConfig struct {
@@ -43,9 +44,10 @@ func getEnv(key string, defaultVal string) string {
 
 func initAppConfig(db *DBConfig) *AppConfig {
 	return &AppConfig{
-		Port:      getEnv("APP_PORT", "8080"),
-		DBConfig:  db,
-		ReportURI: "/reports",
+		Port:                     getEnv("APP_PORT", "8080"),
+		DBConfig:                 db,
+		ReportURI:                "/reports",
+		AccountStatisticPageSize: 3,
 	}
 }
 
