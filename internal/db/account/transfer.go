@@ -22,12 +22,17 @@ func (D *DBAccount) Transfer(info *model.DBTransferInfo) (*model.Account, *model
 		WHERE account_id = $2 RETURNING balance, reserved_balance;`
 	queryTo := `UPDATE account SET balance = balance + $1
 		WHERE account_id = $2 RETURNING balance, reserved_balance;`
-
+	queryTransferInsert := `INSERT INTO account_transfer(from_account_id, to_account_id, amount) 
+		VALUES ($1, $2, $3)`
 	err = D.db.QueryRow(queryFrom, info.Amount, info.FromAccountID).Scan(&fromAccount.Balance, &fromAccount.ReservedBalance)
 	if err != nil {
 		return nil, nil, err
 	}
 	err = D.db.QueryRow(queryTo, info.Amount, info.ToAccountID).Scan(&toAccount.Balance, &toAccount.ReservedBalance)
+	if err != nil {
+		return nil, nil, err
+	}
+	_, err = D.db.Exec(queryTransferInsert, info.FromAccountID, info.ToAccountID, info.Amount)
 	if err != nil {
 		return nil, nil, err
 	}

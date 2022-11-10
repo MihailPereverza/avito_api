@@ -17,6 +17,10 @@ func Init(db *sql.DB) error {
 	if err := createAccountOperationTable(db); err != nil {
 		return err
 	}
+	if err := createTransferTable(db); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -108,6 +112,23 @@ func createAccountOperationTable(db *sql.DB) error {
 		return err
 	}
 	if _, err = operation.Exec(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func createTransferTable(db *sql.DB) error {
+	transfer, err := db.Prepare(`CREATE TABLE IF NOT EXISTS account_transfer(
+    	transfer_id SERIAL PRIMARY KEY,
+    	from_account_id INTEGER REFERENCES account(account_id) NOT NULL,
+    	to_account_id INTEGER REFERENCES account(account_id) NOT NULL,
+    	amount Decimal(13,4) NOT NULL CHECK (amount > 0),
+    	create_time TIMESTAMP DEFAULT now()::timestamp
+	)`)
+	if err != nil {
+		return err
+	}
+	if _, err = transfer.Exec(); err != nil {
 		return err
 	}
 	return nil
