@@ -1,0 +1,451 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "тестовое задание для авито",
+        "title": "AvitBalanceService",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/api/account/balance": {
+            "post": {
+                "description": "get balance",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "account"
+                ],
+                "summary": "GetBalance",
+                "operationId": "account-get-balance",
+                "parameters": [
+                    {
+                        "description": "account_id",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "{\"account_id\": 1234}"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/account.ApproveDebitingOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/outputModel.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/account/balance/add": {
+            "post": {
+                "description": "add balance on account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "account"
+                ],
+                "summary": "AddBalance",
+                "operationId": "account-add-balance",
+                "parameters": [
+                    {
+                        "description": "account_id and balance",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/account.AddBalanceInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/account.AddBalanceOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/outputModel.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/account/balance/reserve": {
+            "post": {
+                "description": "reserve balance from account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "account"
+                ],
+                "summary": "ReserveBalance",
+                "operationId": "account-reserve-balance",
+                "parameters": [
+                    {
+                        "description": "account info",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/account.ServiceAccountInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Account"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/outputModel.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/account/balance/unreserve": {
+            "post": {
+                "description": "unreserve balance from account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "account"
+                ],
+                "summary": "UnReserveBalance",
+                "operationId": "account-unreserve-balance",
+                "parameters": [
+                    {
+                        "description": "operation info",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/account.ServiceAccountInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Account"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/outputModel.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/account/transfer": {
+            "post": {
+                "description": "transfer money from \"from_account\" to \"to_account\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "account"
+                ],
+                "summary": "Transfer",
+                "operationId": "account-transfer",
+                "parameters": [
+                    {
+                        "description": "transfer info",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/account.TransferInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/account.TransferOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/outputModel.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/account/{account_id}/statistic": {
+            "get": {
+                "description": "get transaction statisctic",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "account"
+                ],
+                "summary": "GetBalance",
+                "operationId": "account-get-statistic",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "account_id",
+                        "name": "account_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/account.GetStatisticOutput"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/outputModel.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/operation/approve": {
+            "post": {
+                "description": "approve-debiting",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "account"
+                ],
+                "summary": "ApproveDebiting",
+                "operationId": "account-approve-debiting",
+                "parameters": [
+                    {
+                        "description": "account_id and balance",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/account.ServiceAccountInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/account.ApproveDebitingOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/outputModel.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/report/": {
+            "post": {
+                "description": "reserve balance from account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "report"
+                ],
+                "summary": "GetReport",
+                "operationId": "report-get-report",
+                "responses": {
+                    "200": {
+                        "description": "reportURL",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/outputModel.Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "account.AddBalanceInput": {
+            "type": "object",
+            "properties": {
+                "account_id": {
+                    "type": "integer"
+                },
+                "amount": {
+                    "type": "number"
+                }
+            }
+        },
+        "account.AddBalanceOutput": {
+            "type": "object",
+            "properties": {
+                "account_id": {
+                    "type": "integer"
+                },
+                "balance": {
+                    "type": "number"
+                }
+            }
+        },
+        "account.ApproveDebitingOutput": {
+            "type": "object",
+            "properties": {
+                "companyBalance": {
+                    "type": "number"
+                }
+            }
+        },
+        "account.GetStatisticOutput": {
+            "type": "object",
+            "properties": {
+                "createTime": {
+                    "type": "string"
+                },
+                "operationID": {
+                    "type": "integer"
+                },
+                "serviceDescription": {
+                    "type": "string"
+                },
+                "serviceTitle": {
+                    "type": "string"
+                },
+                "statusTitle": {
+                    "type": "string"
+                },
+                "totalCost": {
+                    "type": "number"
+                }
+            }
+        },
+        "account.ServiceAccountInput": {
+            "type": "object",
+            "properties": {
+                "account_id": {
+                    "type": "integer"
+                },
+                "operation_id": {
+                    "type": "integer"
+                },
+                "service_id": {
+                    "type": "integer"
+                },
+                "total_cost": {
+                    "type": "number"
+                }
+            }
+        },
+        "account.TransferInfo": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "from_account_id": {
+                    "type": "integer"
+                },
+                "to_account_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "account.TransferOutput": {
+            "type": "object",
+            "properties": {
+                "from_account": {
+                    "$ref": "#/definitions/model.Account"
+                },
+                "to_account": {
+                    "$ref": "#/definitions/model.Account"
+                }
+            }
+        },
+        "model.Account": {
+            "type": "object",
+            "properties": {
+                "account_id": {
+                    "type": "integer"
+                },
+                "balance": {
+                    "type": "number"
+                },
+                "reserved_balance": {
+                    "type": "number"
+                }
+            }
+        },
+        "outputModel.Error": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

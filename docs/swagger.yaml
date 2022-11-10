@@ -1,0 +1,296 @@
+basePath: /
+definitions:
+  account.AddBalanceInput:
+    properties:
+      account_id:
+        type: integer
+      amount:
+        type: number
+    type: object
+  account.AddBalanceOutput:
+    properties:
+      account_id:
+        type: integer
+      balance:
+        type: number
+    type: object
+  account.ApproveDebitingOutput:
+    properties:
+      companyBalance:
+        type: number
+    type: object
+  account.GetStatisticOutput:
+    properties:
+      createTime:
+        type: string
+      operationID:
+        type: integer
+      serviceDescription:
+        type: string
+      serviceTitle:
+        type: string
+      statusTitle:
+        type: string
+      totalCost:
+        type: number
+    type: object
+  account.ServiceAccountInput:
+    properties:
+      account_id:
+        type: integer
+      operation_id:
+        type: integer
+      service_id:
+        type: integer
+      total_cost:
+        type: number
+    type: object
+  account.TransferInfo:
+    properties:
+      amount:
+        type: number
+      from_account_id:
+        type: integer
+      to_account_id:
+        type: integer
+    type: object
+  account.TransferOutput:
+    properties:
+      from_account:
+        $ref: '#/definitions/model.Account'
+      to_account:
+        $ref: '#/definitions/model.Account'
+    type: object
+  model.Account:
+    properties:
+      account_id:
+        type: integer
+      balance:
+        type: number
+      reserved_balance:
+        type: number
+    type: object
+  outputModel.Error:
+    properties:
+      error:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: тестовое задание для авито
+  title: AvitBalanceService
+  version: "1.0"
+paths:
+  /api/account/{account_id}/statistic:
+    get:
+      consumes:
+      - application/json
+      description: get transaction statisctic
+      operationId: account-get-statistic
+      parameters:
+      - description: account_id
+        in: path
+        name: account_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/account.GetStatisticOutput'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/outputModel.Error'
+      summary: GetBalance
+      tags:
+      - account
+  /api/account/balance:
+    post:
+      consumes:
+      - application/json
+      description: get balance
+      operationId: account-get-balance
+      parameters:
+      - description: account_id
+        in: body
+        name: input
+        required: true
+        schema:
+          example: '{"account_id": 1234}'
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/account.ApproveDebitingOutput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/outputModel.Error'
+      summary: GetBalance
+      tags:
+      - account
+  /api/account/balance/add:
+    post:
+      consumes:
+      - application/json
+      description: add balance on account
+      operationId: account-add-balance
+      parameters:
+      - description: account_id and balance
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/account.AddBalanceInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/account.AddBalanceOutput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/outputModel.Error'
+      summary: AddBalance
+      tags:
+      - account
+  /api/account/balance/reserve:
+    post:
+      consumes:
+      - application/json
+      description: reserve balance from account
+      operationId: account-reserve-balance
+      parameters:
+      - description: account info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/account.ServiceAccountInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Account'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/outputModel.Error'
+      summary: ReserveBalance
+      tags:
+      - account
+  /api/account/balance/unreserve:
+    post:
+      consumes:
+      - application/json
+      description: unreserve balance from account
+      operationId: account-unreserve-balance
+      parameters:
+      - description: operation info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/account.ServiceAccountInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Account'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/outputModel.Error'
+      summary: UnReserveBalance
+      tags:
+      - account
+  /api/account/transfer:
+    post:
+      consumes:
+      - application/json
+      description: transfer money from "from_account" to "to_account"
+      operationId: account-transfer
+      parameters:
+      - description: transfer info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/account.TransferInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/account.TransferOutput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/outputModel.Error'
+      summary: Transfer
+      tags:
+      - account
+  /api/operation/approve:
+    post:
+      consumes:
+      - application/json
+      description: approve-debiting
+      operationId: account-approve-debiting
+      parameters:
+      - description: account_id and balance
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/account.ServiceAccountInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/account.ApproveDebitingOutput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/outputModel.Error'
+      summary: ApproveDebiting
+      tags:
+      - account
+  /api/report/:
+    post:
+      consumes:
+      - application/json
+      description: reserve balance from account
+      operationId: report-get-report
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: reportURL
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/outputModel.Error'
+      summary: GetReport
+      tags:
+      - report
+swagger: "2.0"
